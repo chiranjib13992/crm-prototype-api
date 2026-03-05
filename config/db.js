@@ -1,12 +1,16 @@
-// config/db.js
-const mysql = require('mysql2');
-const path = require('path');
+import mysql from "mysql2";
+import path from "path";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
 
-require('dotenv').config({ path: path.resolve(__dirname, '../development.env') });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, "../development.env") });
 
 let pool;
 
-const connectDB = () => {
+export const connectDB = () => {
   return new Promise((resolve, reject) => {
     try {
       pool = mysql.createPool({
@@ -37,7 +41,7 @@ const connectDB = () => {
 };
 
 // Add this to the bottom of config/db.js
-const executeQuery = (sql, params = []) => {
+export const executeQuery = (sql, params = []) => {
   return new Promise((resolve, reject) => {
     pool.query(sql, params, (err, results) => {
       if (err) return reject(err);
@@ -45,6 +49,3 @@ const executeQuery = (sql, params = []) => {
     });
   });
 };
-
-module.exports = { connectDB, executeQuery };
-

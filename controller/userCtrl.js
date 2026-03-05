@@ -1,6 +1,6 @@
-const { executeQuery } = require('../config/db');
+import { executeQuery } from "../config/db.js";
 
-exports.AddUser = async (req, res) => {
+export const addUser = async (req, res) => {
     try {
 
         const {

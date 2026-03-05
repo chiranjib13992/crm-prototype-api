@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { executeQuery } = require('../config/db');
+const { executeQuery } = require('../config/db.js');
 
 exports.verifyJwtEmpToken = async (req, res, next) => {
     try {
