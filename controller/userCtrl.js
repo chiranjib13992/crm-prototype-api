@@ -17,7 +17,8 @@ export const addUser = async (req, res) => {
             source,
             is_from_lead,
             note,
-            assigned_employeeid
+            assigned_employeeid,
+            user_status
         } = req.body;
 
         const sql = `CALL insert_user(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
@@ -44,8 +45,7 @@ export const addUser = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "User added successfully",
-            data: result
+            message: "User added successfully"
         });
 
     } catch (err) {

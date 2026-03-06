@@ -29,11 +29,11 @@ export const connectDB = () => {
           console.error('❌ MySQL connection failed:', err.message);
           reject(err);
         } else {
-          console.log('✅ MySQL Database Connected!');
           connection.release();
           resolve();
         }
       });
+
     } catch (error) {
       reject(error);
     }
