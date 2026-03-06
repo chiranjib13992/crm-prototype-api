@@ -10,6 +10,7 @@ CREATE PROCEDURE InsertEmployee(
     IN p_status ENUM('active','inactive'),
     IN p_department VARCHAR(100),
     IN p_profileImage VARCHAR(255)
+    IN p_em_status ENUM('admin','manager','sales','support')
 )
 BEGIN
 

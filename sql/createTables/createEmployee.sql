@@ -10,6 +10,7 @@ CREATE TABLE employees (
     department VARCHAR(100),
     profileImage VARCHAR(255),
     lastLogin DATETIME,
+    em_status ENUM('probation','confirmed','resigned','terminated') DEFAULT 'probation',
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

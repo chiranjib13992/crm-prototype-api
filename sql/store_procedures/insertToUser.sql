@@ -1,3 +1,5 @@
+DROP PROCEDURE IF EXISTS insert_user;
+
 DELIMITER $$
 
 CREATE PROCEDURE insert_user(
@@ -14,7 +16,8 @@ CREATE PROCEDURE insert_user(
     IN p_source VARCHAR(100),
     IN p_is_from_lead BOOLEAN,
     IN p_note TEXT,
-    IN p_assigned_employeeid INT
+    IN p_assigned_employeeid INT,
+    IN p_user_status VARCHAR(20)
 )
 BEGIN
 
@@ -32,7 +35,10 @@ INSERT INTO users (
     source,
     is_from_lead,
     note,
-    assigned_employeeid
+    assigned_employeeid,
+    user_status,
+    createdAt,
+    updatedAt
 )
 VALUES (
     p_fullname,
@@ -48,7 +54,10 @@ VALUES (
     p_source,
     p_is_from_lead,
     p_note,
-    p_assigned_employeeid
+    p_assigned_employeeid,
+    p_user_status,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
 );
 
 END $$
