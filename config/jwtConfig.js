@@ -18,12 +18,12 @@ export const verifyJwtEmpToken = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const [user] = await executeQuery(
-      "SELECT * FROM users WHERE user_id = ?",
-      [decoded.user_id]
+    const [emp] = await executeQuery(
+      "SELECT * FROM employees WHERE id = ?",
+      [decoded.id]
     );
 
-    if (!user) {
+    if (!emp) {
       return res.status(401).json({
         success: false,
         message: "Authentication failed"
@@ -31,8 +31,8 @@ export const verifyJwtEmpToken = async (req, res, next) => {
     }
 
     // attach user to request
-    req.user = user;
-    req.user_id = user.user_id;
+    req.emp = emp;
+    req.id = emp.id;
 
     next();
 

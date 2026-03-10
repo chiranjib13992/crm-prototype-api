@@ -1,3 +1,4 @@
+import { executeQuery } from "../config/db.js";
 
 export const createLeadSourse = async (req, res) => {
   try {
@@ -12,7 +13,7 @@ export const createLeadSourse = async (req, res) => {
 
     const query = `
       INSERT INTO lead_sources (source_name, createdBy)
-      VALUES (?)
+      VALUES (?,?)
     `;
 
     const result = await executeQuery(query, [source_name, req.id]);
