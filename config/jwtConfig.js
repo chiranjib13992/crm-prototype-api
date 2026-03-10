@@ -1,39 +1,46 @@
-const jwt = require('jsonwebtoken');
-const { executeQuery } = require('../config/db.js');
+import jwt from "jsonwebtoken";
+import { executeQuery } from "../config/db.js";
 
-exports.verifyJwtEmpToken = async (req, res, next) => {
-    try {
-        let token;
-        if (req.headers && req.headers.authorization) {
-            token = req.headers.authorization.split(' ')[1];
-        }
+export const verifyJwtEmpToken = async (req, res, next) => {
+  try {
+    let token;
 
-        if (!token) {
-            return res.status(403).send('No token provided');
-        }
-
-        jwt.verify(token, process.env.JWT_SECRET, async (err, decode) => {
-            if (err) {
-                return res.status(401).send('Token authentication failed.');
-            }
-            try {
-                const [user] = await executeQuery(
-                    'SELECT * FROM users WHERE user_id = ?',
-                    [decode.id]
-                );
-                if (user) {
-                    req.id = decode.user_id;
-                    req.user = decode;
-                    next()
-                } else {
-                    return res.status(401).send('Authentication failed');
-                }
-            } catch (err) {
-                return res.status(401).send('Authentication failed');
-            }
-        })
-
-    } catch (err) {
-        console.log(err);
+    if (req.headers && req.headers.authorization) {
+      token = req.headers.authorization.split(" ")[1];
     }
-}
+
+    if (!token) {
+      return res.status(403).json({
+        success: false,
+        message: "No token provided"
+      });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const [user] = await executeQuery(
+      "SELECT * FROM users WHERE user_id = ?",
+      [decoded.user_id]
+    );
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication failed"
+      });
+    }
+
+    // attach user to request
+    req.user = user;
+    req.user_id = user.user_id;
+
+    next();
+
+  } catch (err) {
+    return res.status(401).json({
+      success: false,
+      message: "Token authentication failed",
+      error: err.message
+    });
+  }
+};

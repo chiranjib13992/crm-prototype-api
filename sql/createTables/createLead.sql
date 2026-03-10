@@ -1,52 +1,41 @@
 CREATE TABLE leads (
     id INT AUTO_INCREMENT PRIMARY KEY,
-
-    fullName VARCHAR(150) NOT NULL,
+    
+    -- Basic Customer Details
+    full_name VARCHAR(150) NOT NULL,
     email VARCHAR(150),
     phone VARCHAR(20) NOT NULL,
-    alternativeNum VARCHAR(20),
-    dob DATE,
+    whatsapp_number VARCHAR(20),
 
-    lead_address TEXT,
-    city VARCHAR(100),
-    lead_state VARCHAR(100),
-    country VARCHAR(100),
-    pincode VARCHAR(20),
+    -- Travel Requirement
+    destination VARCHAR(150),
+    travel_start_date DATE,
+    travel_end_date DATE,
+    number_of_travelers INT,
+    adults INT,
+    children INT,
+    budget DECIMAL(10,2),
 
-    companyName VARCHAR(150),
-    designation VARCHAR(100),
-
-    source VARCHAR(100) NOT NULL,
-    status ENUM(
-        'new',
-        'contacted',
-        'interested',
-        'not_interested',
-        'follow_up',
-        'converted',
-        'lost'
-    ) DEFAULT 'new',
+    -- Lead Tracking
+    lead_source VARCHAR(100),
+    lead_status VARCHAR(50),
 
     priority ENUM('low','medium','high') DEFAULT 'medium',
 
-    assigned_employeeid INT,
-
+    -- Sales Assignment
+    assigned_to INT,
+    
+    -- Followup Tracking
+    last_contact_date DATETIME,
     next_followup_date DATETIME,
-    last_contacted_at DATETIME,
 
-    note TEXT,
+    -- Notes
+    customer_notes TEXT,
+    internal_notes TEXT,
 
-    lead_score INT DEFAULT 0,
+    -- System Tracking
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    INDEX idx_lead_phone (phone),
-    INDEX idx_lead_email (email),
-    INDEX idx_lead_status (status),
-    INDEX idx_lead_source (source),
-
-    FOREIGN KEY (assigned_employeeid)
-        REFERENCES employees(id)
-        ON DELETE SET NULL
-) ENGINE=InnoDB;
+    created_by INT
+);
