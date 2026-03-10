@@ -2,7 +2,7 @@ import { Router } from "express";
 import upload from "../middleware/upload.js";
 import { addUser } from "../controller/userCtrl.js";
 import { addEmployee, empLogin } from "../controller/employeeCtrl.js";
-import { createLeadSourse } from "../controller/leadController.js";
+import { createLead, createLeadSourse } from "../controller/leadController.js";
 import { verifyJwtEmpToken } from "../config/jwtConfig.js";
 
 const router = Router();
@@ -21,5 +21,6 @@ router.post('/login-employee', empLogin)
 //LEADS
 
 router.post('/create-leadSource', verifyJwtEmpToken, createLeadSourse);
+router.post('/create-lead', verifyJwtEmpToken, createLead);
 
 export default router;
