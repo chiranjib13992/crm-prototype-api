@@ -34,6 +34,73 @@ export const createLeadSourse = async (req, res) => {
     });
   }
 };
+export const createLead = async (req, res) => {
+  try {
+    const {
+      full_name,
+      email,
+      phone,
+      whatsapp_number,
+      destination,
+      travel_start_date,
+      travel_end_date,
+      number_of_travelers,
+      adults,
+      children,
+      budget,
+      lead_source,
+      lead_status,
+      priority,
+      assigned_to,
+      last_contact_date,
+      next_followup_date,
+      customer_notes,
+      internal_notes,
+      created_by
+    } = req.body;
+
+    const sql = `CALL InsertLead(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+    const values = [
+      full_name,
+      email,
+      phone,
+      whatsapp_number,
+      destination,
+      travel_start_date,
+      travel_end_date,
+      number_of_travelers,
+      adults,
+      children,
+      budget,
+      lead_source,
+      lead_status,
+      priority || "medium",
+      assigned_to,
+      last_contact_date || null,
+      next_followup_date || null,
+      customer_notes,
+      internal_notes,
+      created_by
+    ];
+
+    await executeQuery(sql, values);
+
+    return res.status(201).json({
+      success: true,
+      message: "Lead created successfully"
+    });
+
+  } catch (err) {
+    console.error("Create Lead Error:", err);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to create lead",
+      error: err.message
+    });
+  }
+};
 
 // export const getLeads = async (req, res) => {
 //   try {
