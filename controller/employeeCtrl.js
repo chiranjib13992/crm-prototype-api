@@ -1,6 +1,8 @@
 import { executeQuery } from "../config/db.js";
 import passport from "../config/passportConfig.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 
 
 export const addEmployee = async (req, res) => {
@@ -79,9 +81,12 @@ export const empLogin = async (req, res, next) => {
           });
         }
 
+        const token = generateJwt(user);
+
         return res.status(200).json({
           success: true,
           message: "Login successful",
+          token,
           user: {
             id: user.id,
             name: user.fullName,
@@ -99,3 +104,12 @@ export const empLogin = async (req, res, next) => {
     });
   }
 };
+
+
+function generateJwt(emp) {
+    return jwt.sign(
+        { id: emp.id, email: emp.email, name: emp.name },
+        process.env.JWT_SECRET,
+        { expiresIn: '7d' }
+    );
+}

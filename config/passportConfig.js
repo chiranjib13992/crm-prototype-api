@@ -18,8 +18,6 @@ passport.use(
           [email]
         );
 
-        console.log(employee, 'employee')
-
         if (!employee) {
           return done(null, false, {
             message: "❌ Employee not found. Please register first.",
@@ -45,18 +43,18 @@ passport.use(
 );
 
 // Serialize user
-passport.serializeUser((user, done) => {
-  done(null, user.user_id);
+passport.serializeUser((employee, done) => {
+  done(null, employee.id);
 });
 
 // Deserialize user
 passport.deserializeUser(async (id, done) => {
   try {
-    const [user] = await executeQuery(
-      "SELECT * FROM users WHERE user_id = ?",
+    const [employee] = await executeQuery(
+      "SELECT * FROM employees WHERE id = ?",
       [id]
     );
-    done(null, user || null);
+    done(null, employee || null);
   } catch (err) {
     done(err, null);
   }
