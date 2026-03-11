@@ -17,8 +17,7 @@ export const addUser = async (req, res) => {
             source,
             is_from_lead,
             note,
-            assigned_employeeid,
-            user_status
+            assigned_employeeid
         } = req.body;
 
         const sql = `CALL insert_user(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
