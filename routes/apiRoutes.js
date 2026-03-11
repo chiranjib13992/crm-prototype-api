@@ -6,7 +6,7 @@ import { createLead, createLeadSourse } from "../controller/leadController.js";
 import { verifyJwtEmpToken } from "../config/jwtConfig.js";
 import { createDepartment, deleteDepartmentById, getAllDepartment, getDepartmentById } from "../controller/departmentController.js";
 import { assignPermissionsToRole, createRole, getRoles } from "../controller/roleController.js";
-import { leadReport } from "../controller/reportController.js";
+import { employeeReport, leadReport, sourceReport, teamReport } from "../controller/reportController.js";
 
 const router = Router();
 
@@ -44,6 +44,8 @@ router.post('/roles/assign-permissions', verifyJwtEmpToken, assignPermissionsToR
 //REPORTS
 
 router.get('/reports/leads', verifyJwtEmpToken, leadReport);
-router.get('/reports/employees', verifyJwtEmpToken, )
+router.get('/reports/employees', verifyJwtEmpToken, employeeReport);
+router.get('/reports/team', verifyJwtEmpToken, teamReport);
+router.get('/reports/source', verifyJwtEmpToken, sourceReport);
 
 export default router;
