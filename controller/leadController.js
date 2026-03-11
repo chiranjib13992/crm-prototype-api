@@ -110,3 +110,33 @@ export const createLead = async (req, res) => {
 //     res.status(500).json({ error: error.message });
 //   }
 // };
+
+
+// LEAD FOLLOW UP
+
+export const addLeadFollowUp = async (req, res) => {
+
+}
+
+export const allFollowUps = async (req, res) => {
+
+}
+
+export const followUpById = async (req, res) => {
+
+}
+
+export const uploadLeadsFromExcel = async (req, res) => {
+}
+
+export const assignLead = async (req, res) => {
+
+}
+
+export const deleteLeadById = async (req, res) => {
+
+}
+
+export const allLeads = async (req, res) => {
+  
+}

@@ -2,7 +2,7 @@ import { Router } from "express";
 import upload from "../middleware/upload.js";
 import { addUser } from "../controller/userCtrl.js";
 import { addEmployee, empLogin } from "../controller/employeeCtrl.js";
-import { createLead, createLeadSourse } from "../controller/leadController.js";
+import { addLeadFollowUp, allFollowUps, allLeads, assignLead, createLead, createLeadSourse, deleteLeadById, followUpById, uploadLeadsFromExcel } from "../controller/leadController.js";
 import { verifyJwtEmpToken } from "../config/jwtConfig.js";
 import { createDepartment, deleteDepartmentById, getAllDepartment, getDepartmentById } from "../controller/departmentController.js";
 import { assignPermissionsToRole, createRole, getRoles } from "../controller/roleController.js";
@@ -23,8 +23,15 @@ router.post('/login-employee', empLogin)
 
 //LEADS
 
-router.post('/create-leadSource', verifyJwtEmpToken, createLeadSourse);
-router.post('/create-lead', verifyJwtEmpToken, createLead);
+router.post('/leads/create-leadSource', verifyJwtEmpToken, createLeadSourse);
+router.get('/leads', verifyJwtEmpToken, allLeads);
+router.post('/leads/create-lead', verifyJwtEmpToken, createLead);
+router.post('/leads/upload-excel', verifyJwtEmpToken, uploadLeadsFromExcel);
+router.post('/leads/assign', verifyJwtEmpToken, assignLead);
+router.delete('leads/:id', verifyJwtEmpToken, deleteLeadById);
+router.post('/leads/followups', verifyJwtEmpToken, addLeadFollowUp);
+router.get('/leads/followups', verifyJwtEmpToken, allFollowUps);
+router.get('/leads/followups/:id', verifyJwtEmpToken, followUpById);
 
 
 //DEPARTMENT
