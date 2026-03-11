@@ -10,7 +10,7 @@ CREATE PROCEDURE InsertEmployee(
     IN p_password VARCHAR(255),
     IN p_role VARCHAR(20),
     IN p_status VARCHAR(20),
-    IN p_department VARCHAR(100),
+    IN p_department_id INT,
     IN p_profileImage VARCHAR(255),
     IN p_lastLogin DATETIME,
     IN p_em_status VARCHAR(20)
@@ -25,7 +25,7 @@ INSERT INTO employees (
     password,
     role,
     status,
-    department,
+    department_id,
     profileImage,
     lastLogin,
     em_status
@@ -38,7 +38,7 @@ VALUES (
     p_password,
     p_role,
     p_status,
-    p_department,
+    p_department_id,
     p_profileImage,
     p_lastLogin,
     p_em_status

@@ -15,23 +15,27 @@ export const addEmployee = async (req, res) => {
       password,
       role,
       status,
-      department,
+      department_id,
       profileImage,
       em_status
     } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
+    const counterResult = await executeQuery(`SELECT count FROM counter WHERE name = 'emp'`);
+    const currentCount = counterResult[0].count;
+    const employeeId = `CRM${currentCount}`;
+    await executeQuery(`UPDATE counter SET count = count + 1 WHERE name = 'emp'`);
 
     const sql = `CALL InsertEmployee(?,?,?,?,?,?,?,?,?,?,?)`;
 
     const values = [
-      empId,
+      employeeId,
       fullName,
       email,
       phone,
       hashedPassword,
       role || "sales",
       status || "active",
-      department,
+      department_id,
       profileImage,
       new Date(),
       em_status || "probation"
@@ -107,17 +111,17 @@ export const empLogin = async (req, res, next) => {
 
 
 function generateJwt(emp) {
-    return jwt.sign(
-        { id: emp.id, email: emp.email, name: emp.name },
-        process.env.JWT_SECRET,
-        { expiresIn: '7d' }
-    );
+  return jwt.sign(
+    { id: emp.id, email: emp.email, name: emp.name },
+    process.env.JWT_SECRET,
+    { expiresIn: '7d' }
+  );
 }
 
 export const deleteEmployee = async (req, res) => {
   try {
-    
+
   } catch (error) {
-    
+
   }
 }
