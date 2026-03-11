@@ -113,3 +113,11 @@ function generateJwt(emp) {
         { expiresIn: '7d' }
     );
 }
+
+export const deleteEmployee = async (req, res) => {
+  try {
+    
+  } catch (error) {
+    
+  }
+}
