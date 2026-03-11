@@ -118,10 +118,25 @@ function generateJwt(emp) {
   );
 }
 
-export const deleteEmployee = async (req, res) => {
+
+//modifed by need to add in main prod system
+export const activeInactiveEmployee = async (req, res) => {
   try {
+    const { id } = req.params;
+    const checkSql = `SELECT status FROM employees WHERE id = ?`;
+    const employee = await executeQuery(checkSql, [id]);
+    if (!employee.length) {
+      return res.status(404).json({
+        success: false,
+        message: "Employee not found"
+      });
+    }
+    const currentStatus = employee[0].status;
+    const newStatus = currentStatus === "active" ? "inactive" : "active";
+    const updateSql = `UPDATE employees SET status = ? WHERE id = ?`; await executeQuery(updateSql, [newStatus, id]);
+    return res.status(200).json({ success: true, message: `Employee status updated to ${newStatus}` });
 
   } catch (error) {
-
+    console.error("Employee Status Update Error:", error); return res.status(500).json({ success: false, message: "Failed to update employee status", error: error.message });
   }
 }

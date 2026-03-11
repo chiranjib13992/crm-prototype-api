@@ -1,7 +1,7 @@
 import { Router } from "express";
 import upload from "../middleware/upload.js";
 import { addUser } from "../controller/userCtrl.js";
-import { addEmployee, deleteEmployee, empLogin } from "../controller/employeeCtrl.js";
+import { activeInactiveEmployee, addEmployee, empLogin } from "../controller/employeeCtrl.js";
 import { addLeadFollowUp, allFollowUps, allLeads, assignLead, createLead, createLeadSourse, deleteLeadById, followUpById, uploadLeadsFromExcel } from "../controller/leadController.js";
 import { verifyJwtEmpToken } from "../config/jwtConfig.js";
 import { createDepartment, deleteDepartmentById, getAllDepartment, getDepartmentById } from "../controller/departmentController.js";
@@ -19,7 +19,7 @@ router.post('/add-user', addUser);
 //Employee
 router.post('/add-employee', addEmployee);
 router.post('/login-employee', empLogin);
-router.delete('/delete-employee/:id', verifyJwtEmpToken, deleteEmployee);
+router.post('/update-employee-status/:id', verifyJwtEmpToken, activeInactiveEmployee);
 
 
 
