@@ -130,11 +130,31 @@ export const addLeadFollowUp = async (req, res) => {
 
 
 export const allFollowUps = async (req, res) => {
-
+  try {
+    const sql = ` SELECT lf.id, lf.lead_id, lf.followup_type, lf.notes, lf.next_followup, lf.created_at FROM lead_followups lf ORDER BY lf.created_at DESC `;
+    const followups = await executeQuery(sql);
+    return res.status(200).json({ success: true, message: "Followups fetched successfully", count: followups.length, data: followups });
+  } catch (error) {
+    console.error("Get Followups Error:", error); return res.status(500).json({ success: false, message: "Failed to fetch followups", error: error.message });
+  }
 }
 
 export const followUpById = async (req, res) => {
-
+try {
+  const { id } = req.params;
+   const sql = ` SELECT id, lead_id, followup_type, notes, next_followup, created_at FROM lead_followups WHERE id = ? `;
+   const followup = await executeQuery(sql, [id]);
+    if (!followup.length) {
+       return res.status(404)
+       .json({ 
+        success: false, 
+        message: "Followup not found" 
+      }); 
+    }
+    return res.status(200).json({ success: true, message: "Followup fetched successfully", data: followup[0] });
+} catch (error) {
+  console.error("Get Followup By Id Error:", error); return res.status(500).json({ success: false, message: "Failed to fetch followup", error: error.message });
+}
 }
 
 export const uploadLeadsFromExcel = async (req, res) => {
