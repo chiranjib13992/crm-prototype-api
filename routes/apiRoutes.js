@@ -38,9 +38,9 @@ router.get('/leads/followups/:id', verifyJwtEmpToken, followUpById);
 
 //DEPARTMENT
 router.post('/create-department', verifyJwtEmpToken, createDepartment);
-router.get('/all-department', verifyJwtEmpToken, getAllDepartment);
+router.get('/all-departments', verifyJwtEmpToken, getAllDepartment);
 router.get('/department/:id', verifyJwtEmpToken, getDepartmentById);
-router.delete('/department/:id', verifyJwtEmpToken, deleteDepartmentById);
+router.delete('/department/:id', deleteDepartmentById);
 
 
 //ROLES
