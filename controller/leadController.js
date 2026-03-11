@@ -105,8 +105,29 @@ export const createLead = async (req, res) => {
 // LEAD FOLLOW UP
 
 export const addLeadFollowUp = async (req, res) => {
-
+    try {
+       const { lead_id, followup_type, notes, next_followup } = req.body;
+  if (!lead_id || !followup_type) {
+    return res.status(400)
+      .json({
+        success: false,
+        message: "lead_id and followup_type are required"
+      });
+  }
+  const sql = ` INSERT INTO lead_followups (lead_id, followup_type, notes, next_followup) VALUES (?, ?, ?, ?) `;
+  const values = [lead_id, followup_type, notes || null, next_followup || null];
+  const result = await executeQuery(sql, values);
+  return res.status(201)
+    .json({
+      success: true,
+      message: "Lead follow-up added successfully",
+      followupId: result.insertId
+    });
+    } catch (error) {
+      console.error("Add Followup Error:", error); return res.status(500).json({ success: false, message: "Failed to add follow-up", error: error.message });
+    }
 }
+
 
 export const allFollowUps = async (req, res) => {
 
