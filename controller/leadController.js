@@ -169,5 +169,11 @@ export const deleteLeadById = async (req, res) => {
 }
 
 export const allLeads = async (req, res) => {
-
+  try {
+    const sql = `SELECT id, full_name, email, phone, whatsapp_number, destination, travel_start_date, travel_end_date, number_of_travelers, adults, children, lead_source, lead_status, created_at FROM leads ORDER BY created_at DESC `;
+    const leads = await executeQuery(sql);
+    return res.status(200).json({ success: true, message: "Leads fetched successfully", count: leads.length, data: leads });
+  } catch (error) {
+    console.error("Get Leads Error:", error); return res.status(500).json({ success: false, message: "Failed to fetch leads", error: error.message });
+  }
 }
