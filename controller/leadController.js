@@ -102,16 +102,6 @@ export const createLead = async (req, res) => {
   }
 };
 
-// export const getLeads = async (req, res) => {
-//   try {
-//     const leads = await prisma.lead.findMany();
-//     res.json(leads);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
-
-
 // LEAD FOLLOW UP
 
 export const addLeadFollowUp = async (req, res) => {
@@ -138,5 +128,5 @@ export const deleteLeadById = async (req, res) => {
 }
 
 export const allLeads = async (req, res) => {
-  
+
 }
