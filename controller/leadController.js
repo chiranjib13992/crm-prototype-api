@@ -59,7 +59,7 @@ export const createLead = async (req, res) => {
       created_by
     } = req.body;
 
-    const sql = `CALL InsertLead(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    const sql = `CALL InsertLead(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
     const values = [
       full_name,
@@ -81,7 +81,8 @@ export const createLead = async (req, res) => {
       next_followup_date || null,
       customer_notes,
       internal_notes,
-      created_by
+      created_by,
+      null
     ];
 
     await executeQuery(sql, values);
@@ -163,7 +164,7 @@ export const uploadLeadsFromExcel = async (req, res) => {
     if (!Array.isArray(leads) || leads.length === 0) {
       return res.status(400).json({ message: "Invalid leads data" });
     }
-    const sql = `CALL InsertLead(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    const sql = `CALL InsertLead(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
     for (const lead of leads) {
 
       const values = [
@@ -186,7 +187,8 @@ export const uploadLeadsFromExcel = async (req, res) => {
         lead.next_followup_date || null,
         lead.customer_notes,
         lead.internal_notes,
-        lead.created_by
+        lead.created_by,
+        null
       ];
 
       await executeQuery(sql, values);
@@ -202,7 +204,26 @@ export const uploadLeadsFromExcel = async (req, res) => {
 }
 
 export const assignLead = async (req, res) => {
+  try {
+    const { lead_id, assigned_to } = req.body;
+    if (!lead_id || !assigned_to) {
+      return res.status(400).json({
+        message: "lead_id and assigned_to are required"
+      });
+    }
+    const sql = ` UPDATE leads 
+      SET assigned_to = ?, updatedBy = ? 
+      WHERE id = ?`;
 
+    await executeQuery(sql, [assigned_to, req.id, lead_id]);
+    res.status(200).json({
+      message: "Lead assigned successfully"
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to assign lead"
+    });
+  }
 }
 
 export const deleteLeadById = async (req, res) => {

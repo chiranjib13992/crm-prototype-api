@@ -22,7 +22,8 @@ CREATE PROCEDURE InsertLead(
     IN p_next_followup_date DATETIME,
     IN p_customer_notes TEXT,
     IN p_internal_notes TEXT,
-    IN p_created_by INT
+    IN p_created_by INT,
+    IN p_updatedBy INT
 )
 BEGIN
 
@@ -46,7 +47,8 @@ INSERT INTO leads (
     next_followup_date,
     customer_notes,
     internal_notes,
-    created_by
+    created_by,
+    updatedBy
 )
 VALUES (
     p_full_name,
@@ -68,7 +70,8 @@ VALUES (
     p_next_followup_date,
     p_customer_notes,
     p_internal_notes,
-    p_created_by
+    p_created_by,
+    p_updatedBy
 );
 
 END $$
