@@ -105,27 +105,27 @@ export const createLead = async (req, res) => {
 // LEAD FOLLOW UP
 
 export const addLeadFollowUp = async (req, res) => {
-    try {
-       const { lead_id, followup_type, notes, next_followup } = req.body;
-  if (!lead_id || !followup_type) {
-    return res.status(400)
-      .json({
-        success: false,
-        message: "lead_id and followup_type are required"
-      });
-  }
-  const sql = ` INSERT INTO lead_followups (lead_id, followup_type, notes, next_followup) VALUES (?, ?, ?, ?) `;
-  const values = [lead_id, followup_type, notes || null, next_followup || null];
-  const result = await executeQuery(sql, values);
-  return res.status(201)
-    .json({
-      success: true,
-      message: "Lead follow-up added successfully",
-      followupId: result.insertId
-    });
-    } catch (error) {
-      console.error("Add Followup Error:", error); return res.status(500).json({ success: false, message: "Failed to add follow-up", error: error.message });
+  try {
+    const { lead_id, followup_type, notes, next_followup } = req.body;
+    if (!lead_id || !followup_type) {
+      return res.status(400)
+        .json({
+          success: false,
+          message: "lead_id and followup_type are required"
+        });
     }
+    const sql = ` INSERT INTO lead_followups (lead_id, followup_type, notes, next_followup) VALUES (?, ?, ?, ?) `;
+    const values = [lead_id, followup_type, notes || null, next_followup || null];
+    const result = await executeQuery(sql, values);
+    return res.status(201)
+      .json({
+        success: true,
+        message: "Lead follow-up added successfully",
+        followupId: result.insertId
+      });
+  } catch (error) {
+    console.error("Add Followup Error:", error); return res.status(500).json({ success: false, message: "Failed to add follow-up", error: error.message });
+  }
 }
 
 
@@ -140,24 +140,65 @@ export const allFollowUps = async (req, res) => {
 }
 
 export const followUpById = async (req, res) => {
-try {
-  const { id } = req.params;
-   const sql = ` SELECT id, lead_id, followup_type, notes, next_followup, created_at FROM lead_followups WHERE id = ? `;
-   const followup = await executeQuery(sql, [id]);
+  try {
+    const { id } = req.params;
+    const sql = ` SELECT id, lead_id, followup_type, notes, next_followup, created_at FROM lead_followups WHERE id = ? `;
+    const followup = await executeQuery(sql, [id]);
     if (!followup.length) {
-       return res.status(404)
-       .json({ 
-        success: false, 
-        message: "Followup not found" 
-      }); 
+      return res.status(404)
+        .json({
+          success: false,
+          message: "Followup not found"
+        });
     }
     return res.status(200).json({ success: true, message: "Followup fetched successfully", data: followup[0] });
-} catch (error) {
-  console.error("Get Followup By Id Error:", error); return res.status(500).json({ success: false, message: "Failed to fetch followup", error: error.message });
-}
+  } catch (error) {
+    console.error("Get Followup By Id Error:", error); return res.status(500).json({ success: false, message: "Failed to fetch followup", error: error.message });
+  }
 }
 
 export const uploadLeadsFromExcel = async (req, res) => {
+  try {
+    const leads = req.body;
+    if (!Array.isArray(leads) || leads.length === 0) {
+      return res.status(400).json({ message: "Invalid leads data" });
+    }
+    const sql = `CALL InsertLead(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    for (const lead of leads) {
+
+      const values = [
+        lead.full_name,
+        lead.email,
+        lead.phone,
+        lead.whatsapp_number,
+        lead.destination,
+        lead.travel_start_date,
+        lead.travel_end_date,
+        lead.number_of_travelers,
+        lead.adults,
+        lead.children,
+        lead.budget,
+        lead.lead_source,
+        lead.lead_status,
+        lead.priority || "medium",
+        lead.assigned_to,
+        lead.last_contact_date || null,
+        lead.next_followup_date || null,
+        lead.customer_notes,
+        lead.internal_notes,
+        lead.created_by
+      ];
+
+      await executeQuery(sql, values);
+    }
+
+    res.status(200).json({
+      message: `${leads.length} leads inserted successfully`
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Lead upload failed" });
+  }
 }
 
 export const assignLead = async (req, res) => {
