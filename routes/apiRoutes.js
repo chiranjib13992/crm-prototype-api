@@ -30,7 +30,7 @@ router.get('/leads', verifyJwtEmpToken, allLeads);
 router.post('/leads/create-lead', verifyJwtEmpToken, createLead);
 router.post('/leads/upload-excel', verifyJwtEmpToken, uploadLeadsFromExcel);
 router.post('/leads/assign', verifyJwtEmpToken, assignLead);
-router.delete('leads/:id', verifyJwtEmpToken, deleteLeadById);
+router.delete('/lead/:id', verifyJwtEmpToken, deleteLeadById);
 router.post('/leads/followups', verifyJwtEmpToken, addLeadFollowUp);
 router.get('/leads/followups', verifyJwtEmpToken, allFollowUps);
 router.get('/leads/followups/:id', verifyJwtEmpToken, followUpById);

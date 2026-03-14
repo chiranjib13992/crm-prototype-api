@@ -227,7 +227,34 @@ export const assignLead = async (req, res) => {
 }
 
 export const deleteLeadById = async (req, res) => {
+  try {
+    const { id } = req.params;
 
+    if (!id) {
+      return res.status(400).json({
+        message: "Lead id is required"
+      });
+    }
+
+    const sql = `DELETE FROM leads WHERE id = ?`;
+
+    const result = await executeQuery(sql, [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Lead not found"
+      });
+    }
+    res.status(200).json({
+      message: "Lead deleted successfully"
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Failed to delete lead"
+    });
+
+  }
 }
 
 export const allLeads = async (req, res) => {
